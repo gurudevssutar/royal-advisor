@@ -1,16 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:drag_drop_listview_example/Dialogs/rightansDialog.dart';
 import 'package:drag_drop_listview_example/Dialogs/wrongansDialog.dart';
 import 'package:drag_drop_listview_example/data/draggable_lists.dart';
+import 'package:drag_drop_listview_example/widgets/fullscreenImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-import 'model/draggable_list.dart';
+import 'models/draggable_list.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +65,7 @@ class _MainPage extends State<MainPage> {
     return true;
   }
 
-  void submitans(List<DraggableList> soln, List<String> ans){
+  void submitans(List<DraggableList> soln, List<String> ans) {
     if (anscheck(soln, ans)) {
       print('Answer is correct');
       showDialog(
@@ -79,7 +81,6 @@ class _MainPage extends State<MainPage> {
             return IncorrectAnsDialog();
           });
     }
-
   }
 
   @override
@@ -94,6 +95,41 @@ class _MainPage extends State<MainPage> {
       ),
       body: Column(
         children: [
+          GestureDetector(
+            child: Hero(
+                tag: 'imageHero',
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png",
+                  placeholder: (context, url) => Center(
+                      child: Container(
+                          width: 32,
+                          height: 32,
+                          child: CircularProgressIndicator())),
+                  errorWidget: (context, url, error) {
+                    print('Error: ${error}');
+                    print('URL: ${url}');
+                    return Icon(Icons.error);
+                  },
+                )),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return DetailScreen(
+                    tag: 'imageHero',
+                    url:
+                        "https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png");
+              }));
+            },
+          ),
+          // GestureDetector(
+          //   onTap: () {}, // handle your image tap here
+          //   child: Image.network(
+          //     'https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png',
+          //      // this is the solution for border
+          //     width: 500,
+          //     height: 200,
+          //   ),
+          // ),
           Flexible(
             child: DragAndDropLists(
               lastItemTargetHeight: 50,
