@@ -38,12 +38,26 @@ class MainPage extends StatefulWidget {
 
 class _MainPage extends State<MainPage> {
   late List<DragAndDropList> lists;
+  late List<DraggableList> current;
 
   @override
   void initState() {
     super.initState();
 
     lists = allLists.map(buildList).toList();
+    current = allLists;
+  }
+
+  bool anscheck(List<DraggableList> soln, List<String> ans) {
+    // Code to check answer
+    int j = 0;
+    for(DraggableListItem i in soln[0].items){
+      if(i.id != ans[j]){
+        return false;
+      }
+      j++;
+    }
+    return true;
   }
 
   @override
@@ -56,26 +70,50 @@ class _MainPage extends State<MainPage> {
         title: Text(MyApp.title),
         centerTitle: true,
       ),
-      body: DragAndDropLists(
-        lastItemTargetHeight: 50,
-        addLastItemTargetHeightToTop: true,
-        lastListTargetSize: 30,
-        listPadding: EdgeInsets.all(16),
+      body: Column(
+        children: [
+          Flexible(
+            child: DragAndDropLists(
+              lastItemTargetHeight: 50,
+              addLastItemTargetHeightToTop: true,
+              lastListTargetSize: 30,
+              listPadding: EdgeInsets.all(16),
 
-        listInnerDecoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        children: lists,
-        itemDivider: Divider(thickness: 2, height: 2, color: backgroundColor),
-        itemDecorationWhileDragging: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-        ),
-        // listDragHandle: buildDragHandle(isList: true),
-        itemDragHandle: buildDragHandle(),
-        onItemReorder: onReorderListItem,
-        onListReorder: onReorderList,
+              listInnerDecoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              children: lists,
+              itemDivider:
+                  Divider(thickness: 2, height: 2, color: backgroundColor),
+              itemDecorationWhileDragging: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+              ),
+              // listDragHandle: buildDragHandle(isList: true),
+              itemDragHandle: buildDragHandle(),
+              onItemReorder: onReorderListItem,
+              onListReorder: onReorderList,
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if(anscheck(current, anslist)){
+                print('Answer is correct');
+              }else{
+                print('Invalid Answer');
+              }
+            },
+            child: Text('Submit'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                )),
+          )
+        ],
       ),
     );
   }
@@ -132,9 +170,20 @@ class _MainPage extends State<MainPage> {
       final oldListItems = lists[oldListIndex].children;
       final newListItems = lists[newListIndex].children;
 
+      for(DraggableListItem i in current[0].items){
+        print("${i.id}");
+      }
+      print("${oldItemIndex} ${oldListIndex} ${newItemIndex} ${newListIndex}");
+
       if (oldListIndex == newListIndex) {
         final movedItem = oldListItems.removeAt(oldItemIndex);
+        final movedTile = current[0].items.removeAt(oldItemIndex);
         newListItems.insert(newItemIndex, movedItem);
+
+        current[0].items.insert(newItemIndex, movedTile);
+        for(DraggableListItem i in current[0].items){
+          print("${i.id}");
+        }
       }
     });
   }

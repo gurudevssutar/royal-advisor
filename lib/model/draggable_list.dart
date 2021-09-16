@@ -9,13 +9,16 @@ class DraggableList {
 }
 
 class DraggableListItem {
+  final String id;
   final String title;
   final String urlImage;
   final int arrivalTime;
   final int executeTime;
 
   const DraggableListItem(
-      {required this.title,
+      {
+        required this.id,
+        required this.title,
       required this.urlImage,
       required this.arrivalTime,
       required this.executeTime});
