@@ -1,6 +1,8 @@
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
+import 'package:drag_drop_listview_example/Dialogs/rightansDialog.dart';
+import 'package:drag_drop_listview_example/Dialogs/wrongansDialog.dart';
 import 'package:drag_drop_listview_example/data/draggable_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,6 +63,25 @@ class _MainPage extends State<MainPage> {
     return true;
   }
 
+  void submitans(List<DraggableList> soln, List<String> ans){
+    if (anscheck(soln, ans)) {
+      print('Answer is correct');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return RightAnsDialog();
+          });
+    } else {
+      print('Invalid Answer');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return IncorrectAnsDialog();
+          });
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Color.fromARGB(255, 243, 242, 248);
@@ -97,28 +118,20 @@ class _MainPage extends State<MainPage> {
               onListReorder: onReorderList,
             ),
           ),
-          Container(
-              width: 200,
-              height: 200,
-              child: RiveAnimation.asset('assets/checkmark_icon.riv')),
-          ElevatedButton(
-            child: const Text('Play One-Shot Animation'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (context) => const PlayOneShotAnimation(),
-                ),
-              );
-            },
-          ),
+          // ElevatedButton(
+          //   child: const Text('Play One-Shot Animation'),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute<void>(
+          //         builder: (context) => const PlayOneShotAnimation(),
+          //       ),
+          //     );
+          //   },
+          // ),
           ElevatedButton(
             onPressed: () {
-              if (anscheck(current, anslist)) {
-                print('Answer is correct');
-              } else {
-                print('Invalid Answer');
-              }
+              submitans(current, anslist);
             },
             child: Text('Submit'),
             style: ElevatedButton.styleFrom(
@@ -215,51 +228,50 @@ class _MainPage extends State<MainPage> {
   }
 }
 
-
-class PlayOneShotAnimation extends StatefulWidget {
-  const PlayOneShotAnimation({Key? key}) : super(key: key);
-
-  @override
-  _PlayOneShotAnimationState createState() => _PlayOneShotAnimationState();
-}
-
-class _PlayOneShotAnimationState extends State<PlayOneShotAnimation> {
-  /// Controller for playback
-  late RiveAnimationController _controller;
-
-  /// Is the animation currently playing?
-  bool _isPlaying = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = OneShotAnimation(
-      'bounce',
-      autoplay: false,
-      onStop: () => setState(() => _isPlaying = false),
-      onStart: () => setState(() => _isPlaying = true),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('One-Shot Example'),
-      ),
-      body: Center(
-        child: RiveAnimation.network(
-          'https://cdn.rive.app/animations/vehicles.riv',
-          animations: const ['idle', 'curves'],
-          controllers: [_controller],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // disable the button while playing the animation
-        onPressed: () => _isPlaying ? null : _controller.isActive = true,
-        tooltip: 'Play',
-        child: const Icon(Icons.arrow_upward),
-      ),
-    );
-  }
-}
+// class PlayOneShotAnimation extends StatefulWidget {
+//   const PlayOneShotAnimation({Key? key}) : super(key: key);
+//
+//   @override
+//   _PlayOneShotAnimationState createState() => _PlayOneShotAnimationState();
+// }
+//
+// class _PlayOneShotAnimationState extends State<PlayOneShotAnimation> {
+//   /// Controller for playback
+//   late RiveAnimationController _controller;
+//
+//   /// Is the animation currently playing?
+//   bool _isPlaying = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = OneShotAnimation(
+//       'bounce',
+//       autoplay: false,
+//       onStop: () => setState(() => _isPlaying = false),
+//       onStart: () => setState(() => _isPlaying = true),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('One-Shot Example'),
+//       ),
+//       body: Center(
+//         child: RiveAnimation.network(
+//           'https://cdn.rive.app/animations/vehicles.riv',
+//           animations: const ['idle', 'curves'],
+//           controllers: [_controller],
+//         ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         // disable the button while playing the animation
+//         onPressed: () => _isPlaying ? null : _controller.isActive = true,
+//         tooltip: 'Play',
+//         child: const Icon(Icons.arrow_upward),
+//       ),
+//     );
+//   }
+// }
