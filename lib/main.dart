@@ -100,7 +100,7 @@ class _MainPage extends State<MainPage> {
                 tag: 'imageHero',
                 child: CachedNetworkImage(
                   imageUrl:
-                      "https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png",
+                      "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS-q1.png",
                   placeholder: (context, url) => Center(
                       child: Container(
                           width: 32,
@@ -117,7 +117,7 @@ class _MainPage extends State<MainPage> {
                 return DetailScreen(
                     tag: 'imageHero',
                     url:
-                        "https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png");
+                        "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS-q1.png");
               }));
             },
           ),
