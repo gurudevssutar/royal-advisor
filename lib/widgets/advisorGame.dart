@@ -26,6 +26,8 @@ class _AdvisorGameState extends State<AdvisorGame> {
 
     lists = allLists.map(buildList).toList();
     current = allLists;
+
+
   }
 
   bool anscheck(List<DraggableList> soln, List<String> ans) {
@@ -67,7 +69,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
               tag: 'imageHero',
               child: CachedNetworkImage(
                 imageUrl:
-                    "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS-q1.png",
+                    "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG",
                 placeholder: (context, url) => Center(
                     child: Container(
                         width: 32,
@@ -84,7 +86,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
               return DetailScreen(
                   tag: 'imageHero',
                   url:
-                      "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS-q1.png");
+                      "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG");
             }));
           },
         ),
@@ -99,9 +101,10 @@ class _AdvisorGameState extends State<AdvisorGame> {
         // ),
         Flexible(
           child: DragAndDropLists(
+
             lastItemTargetHeight: 50,
             addLastItemTargetHeightToTop: true,
-            lastListTargetSize: 30,
+            // lastListTargetSize: 30,
             listPadding: EdgeInsets.all(16),
 
             listInnerDecoration: BoxDecoration(
@@ -143,7 +146,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
             child: Text('Submit'),
             style: ElevatedButton.styleFrom(
                 primary: Colors.red,
-                
+
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 textStyle: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -172,7 +175,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
 
   DragAndDropList buildList(DraggableList list) => DragAndDropList(
         header: Container(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.all(0),
           child: Text(
             list.header,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
