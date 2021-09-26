@@ -1,13 +1,9 @@
-import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_list.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
-import 'package:drag_drop_listview_example/data/draggable_lists.dart';
+
+import 'package:drag_drop_listview_example/widgets/advisorGame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-
-import 'model/draggable_list.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: title,
-        theme: ThemeData(primarySwatch: Colors.red),
+        theme: ThemeData(primarySwatch: Colors.red,
+        backgroundColor: Color.fromARGB(255, 243, 242, 248),
+        ),
         home: MainPage(),
       );
 }
@@ -37,164 +35,65 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPage extends State<MainPage> {
-  late List<DragAndDropList> lists;
-  late List<DraggableList> current;
-
-  @override
-  void initState() {
-    super.initState();
-
-    lists = allLists.map(buildList).toList();
-    current = allLists;
-  }
-
-  bool anscheck(List<DraggableList> soln, List<String> ans) {
-    // Code to check answer
-    int j = 0;
-    for(DraggableListItem i in soln[0].items){
-      if(i.id != ans[j]){
-        return false;
-      }
-      j++;
-    }
-    return true;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = Color.fromARGB(255, 243, 242, 248);
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(MyApp.title),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Flexible(
-            child: DragAndDropLists(
-              lastItemTargetHeight: 50,
-              addLastItemTargetHeightToTop: true,
-              lastListTargetSize: 30,
-              listPadding: EdgeInsets.all(16),
-
-              listInnerDecoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              children: lists,
-              itemDivider:
-                  Divider(thickness: 2, height: 2, color: backgroundColor),
-              itemDecorationWhileDragging: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-              ),
-              // listDragHandle: buildDragHandle(isList: true),
-              itemDragHandle: buildDragHandle(),
-              onItemReorder: onReorderListItem,
-              onListReorder: onReorderList,
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if(anscheck(current, anslist)){
-                print('Answer is correct');
-              }else{
-                print('Invalid Answer');
-              }
-            },
-            child: Text('Submit'),
-            style: ElevatedButton.styleFrom(
-                primary: Colors.red,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                textStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                )),
-          )
-        ],
-      ),
+      body: AdvisorGame(),
     );
-  }
-
-  DragHandle buildDragHandle({bool isList = false}) {
-    final verticalAlignment = isList
-        ? DragHandleVerticalAlignment.top
-        : DragHandleVerticalAlignment.center;
-    final color = isList ? Colors.blueGrey : Colors.black26;
-
-    return DragHandle(
-      verticalAlignment: verticalAlignment,
-      child: Container(
-        padding: EdgeInsets.only(right: 10),
-        child: Icon(Icons.menu, color: color),
-      ),
-    );
-  }
-
-  DragAndDropList buildList(DraggableList list) => DragAndDropList(
-        header: Container(
-          padding: EdgeInsets.all(8),
-          child: Text(
-            list.header,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-        ),
-        children: list.items
-            .map((item) => DragAndDropItem(
-                  child: ListTile(
-                    leading: Image.network(
-                      item.urlImage,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(item.title +
-                        "\nArrival Time = " +
-                        item.arrivalTime.toString() +
-                        "\nExecute Time = " +
-                        item.executeTime.toString()),
-                  ),
-                ))
-            .toList(),
-      );
-
-  void onReorderListItem(
-    int oldItemIndex,
-    int oldListIndex,
-    int newItemIndex,
-    int newListIndex,
-  ) {
-    setState(() {
-      final oldListItems = lists[oldListIndex].children;
-      final newListItems = lists[newListIndex].children;
-
-      for(DraggableListItem i in current[0].items){
-        print("${i.id}");
-      }
-      print("${oldItemIndex} ${oldListIndex} ${newItemIndex} ${newListIndex}");
-
-      if (oldListIndex == newListIndex) {
-        final movedItem = oldListItems.removeAt(oldItemIndex);
-        final movedTile = current[0].items.removeAt(oldItemIndex);
-        newListItems.insert(newItemIndex, movedItem);
-
-        current[0].items.insert(newItemIndex, movedTile);
-        for(DraggableListItem i in current[0].items){
-          print("${i.id}");
-        }
-      }
-    });
-  }
-
-  void onReorderList(
-    int oldListIndex,
-    int newListIndex,
-  ) {
-    setState(() {
-      final movedList = lists.removeAt(oldListIndex);
-      lists.insert(newListIndex, movedList);
-    });
   }
 }
+
+// class PlayOneShotAnimation extends StatefulWidget {
+//   const PlayOneShotAnimation({Key? key}) : super(key: key);
+//
+//   @override
+//   _PlayOneShotAnimationState createState() => _PlayOneShotAnimationState();
+// }
+//
+// class _PlayOneShotAnimationState extends State<PlayOneShotAnimation> {
+//   /// Controller for playback
+//   late RiveAnimationController _controller;
+//
+//   /// Is the animation currently playing?
+//   bool _isPlaying = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = OneShotAnimation(
+//       'bounce',
+//       autoplay: false,
+//       onStop: () => setState(() => _isPlaying = false),
+//       onStart: () => setState(() => _isPlaying = true),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('One-Shot Example'),
+//       ),
+//       body: Center(
+//         child: RiveAnimation.network(
+//           'https://cdn.rive.app/animations/vehicles.riv',
+//           animations: const ['idle', 'curves'],
+//           controllers: [_controller],
+//         ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         // disable the button while playing the animation
+//         onPressed: () => _isPlaying ? null : _controller.isActive = true,
+//         tooltip: 'Play',
+//         child: const Icon(Icons.arrow_upward),
+//       ),
+//     );
+//   }
+// }

@@ -1,4 +1,4 @@
-import 'package:drag_drop_listview_example/model/draggable_list.dart';
+import 'package:drag_drop_listview_example/models/draggable_list.dart';
 
 List<DraggableList> allLists = [
   DraggableList(
