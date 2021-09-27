@@ -1,0 +1,86 @@
+{
+    "questioNum": 1,
+    "algoName" : "FCFS",
+    "preemption": false,
+    "questionText": "Schedule the following tasks as per FCFS algorithm",
+    "questionImg": "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG",
+    "questionOptions": [
+        "ObjectId(\"6151f172bd1791c3715d2d3f\")",
+        "ObjectId(\"6151f172bd1791c3715d2d40\")",
+        "ObjectId(\"6151f172bd1791c3715d2d3d\")",
+        "ObjectId(\"6151f172bd1791c3715d2d3e\")"
+    ],
+    "answer": [
+        {
+            "qRef": "ObjectId(\"6151f172bd1791c3715d2d3d\")",
+            "startTime":0,
+            "endTime":5
+        },
+        {
+            "qRef": "ObjectId(\"6151f172bd1791c3715d2d3e\")",
+            "startTime":5,
+            "endTime": 8
+        },
+        {
+            "qRef": "ObjectId(\"6151f172bd1791c3715d2d3f\")",
+            "startTime":8,
+            "endTime": 16
+        },
+        {
+            "qRef": "ObjectId(\"6151f172bd1791c3715d2d40\")",
+            "startTime":16,
+            "endTime": 19
+        }
+    ]
+}
+
+
+{
+    "questioNum": 1,
+    "algoName" : "FCFS",
+    "preemption": false,
+    "questionText": "Schedule the following tasks as per FCFS algorithm",
+    "questionImg": "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG",
+    "questionOptions": [
+        {
+            "optionId": "kidiee",
+            "optionName": "njknvfjnf",
+            "optionImg": "jhfkgvhnfkinvnvkinv",
+            "arrivalTime": 4,
+            "burstTime": 8,
+            "startTime":0,
+            "endTime":0
+        },
+        {
+            "optionId": "kidiee",
+            "optionName": "njknvfjnf",
+            "optionImg": "jhfkgvhnfkinvnvkinv",
+            "arrivalTime": 4,
+            "burstTime": 8,
+            "startTime":0,
+            "endTime":0
+        }
+    ],
+    "answer": [
+        {
+            "ansId": "kidiee",
+            "ansName": "njknvfjnf",
+            "startTime":5,
+            "endTime":9
+        },
+        {
+            "ansId": "kidiee",
+            "ansName": "njknvfjnf",
+            "startTime":0,
+            "endTime":0
+        }
+    ]
+}
+
+// [
+//     {
+//         'name':,
+//         'startTime'
+//         'endTime'
+//     }
+// ]
