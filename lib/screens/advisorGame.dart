@@ -148,7 +148,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
                 },
                 child: Text('Submit'),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
+                    primary: Theme.of(context).primaryColor,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     textStyle: TextStyle(
                       fontWeight: FontWeight.bold,

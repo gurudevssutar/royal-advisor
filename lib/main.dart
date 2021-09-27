@@ -1,3 +1,4 @@
+import 'package:drag_drop_listview_example/screens/gameSelectScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -39,7 +40,7 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
-    return  AdvisorGame();
+    return  GameSelect();
   }
 }
 
