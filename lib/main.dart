@@ -1,9 +1,9 @@
-
-import 'package:drag_drop_listview_example/widgets/advisorGame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+
+import 'package:drag_drop_listview_example/screens/advisorGame.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,14 +39,7 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(MyApp.title),
-        centerTitle: true,
-      ),
-      body: AdvisorGame(),
-    );
+    return  AdvisorGame();
   }
 }
 

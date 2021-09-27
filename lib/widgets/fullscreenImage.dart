@@ -34,17 +34,23 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
-        body: Center(
-          child: Hero(
-            tag: widget.tag,
-            child: CachedNetworkImage(
-              imageUrl: widget.url,
-              placeholder: (context, url) => Center(
-                  child: Container(
-                      width: 32,
-                      height: 32,
-                      child: CircularProgressIndicator())),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+        body: InteractiveViewer(
+          panEnabled: false, // Set it to false
+          boundaryMargin: EdgeInsets.all(100),
+          minScale: 0.5,
+          maxScale: 2,
+          child: Center(
+            child: Hero(
+              tag: widget.tag,
+              child: CachedNetworkImage(
+                imageUrl: widget.url,
+                placeholder: (context, url) => Center(
+                    child: Container(
+                        width: 32,
+                        height: 32,
+                        child: CircularProgressIndicator())),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
             ),
           ),
         ),
