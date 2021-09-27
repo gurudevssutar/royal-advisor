@@ -26,8 +26,6 @@ class _AdvisorGameState extends State<AdvisorGame> {
 
     lists = allLists.map(buildList).toList();
     current = allLists;
-
-
   }
 
   bool anscheck(List<DraggableList> soln, List<String> ans) {
@@ -62,100 +60,104 @@ class _AdvisorGameState extends State<AdvisorGame> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          child: Hero(
-              tag: 'imageHero',
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG",
-                placeholder: (context, url) => Center(
-                    child: Container(
-                        width: 32,
-                        height: 32,
-                        child: CircularProgressIndicator())),
-                errorWidget: (context, url, error) {
-                  print('Error: ${error}');
-                  print('URL: ${url}');
-                  return Icon(Icons.error);
-                },
-              )),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return DetailScreen(
+    return Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text('Royal Advisor'),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            GestureDetector(
+              child: Hero(
                   tag: 'imageHero',
-                  url:
-                      "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG");
-            }));
-          },
-        ),
-        // GestureDetector(
-        //   onTap: () {}, // handle your image tap here
-        //   child: Image.network(
-        //     'https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png',
-        //      // this is the solution for border
-        //     width: 500,
-        //     height: 200,
-        //   ),
-        // ),
-        Flexible(
-          child: DragAndDropLists(
-
-            lastItemTargetHeight: 50,
-            addLastItemTargetHeightToTop: true,
-            // lastListTargetSize: 30,
-            listPadding: EdgeInsets.all(16),
-
-            listInnerDecoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.circular(10),
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG",
+                    placeholder: (context, url) => Center(
+                        child: Container(
+                            width: 32,
+                            height: 32,
+                            child: CircularProgressIndicator())),
+                    errorWidget: (context, url, error) {
+                      print('Error: ${error}');
+                      print('URL: ${url}');
+                      return Icon(Icons.error);
+                    },
+                  )),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return DetailScreen(
+                      tag: 'imageHero',
+                      url:
+                          "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG");
+                }));
+              },
             ),
-            children: lists,
-            itemDivider: Divider(
-                thickness: 2,
-                height: 2,
-                color: Theme.of(context).backgroundColor),
-            itemDecorationWhileDragging: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-            ),
-            // listDragHandle: buildDragHandle(isList: true),
-            itemDragHandle: buildDragHandle(),
-            onItemReorder: onReorderListItem,
-            onListReorder: onReorderList,
-          ),
-        ),
-        // ElevatedButton(
-        //   child: const Text('Play One-Shot Animation'),
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute<void>(
-        //         builder: (context) => const PlayOneShotAnimation(),
-        //       ),
-        //     );
-        //   },
-        // ),
-        Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-          child: ElevatedButton(
-            onPressed: () {
-              submitans(current, anslist);
-            },
-            child: Text('Submit'),
-            style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+            // GestureDetector(
+            //   onTap: () {}, // handle your image tap here
+            //   child: Image.network(
+            //     'https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png',
+            //      // this is the solution for border
+            //     width: 500,
+            //     height: 200,
+            //   ),
+            // ),
+            Flexible(
+              child: DragAndDropLists(
+                lastItemTargetHeight: 50,
+                addLastItemTargetHeightToTop: true,
+                // lastListTargetSize: 30,
+                listPadding: EdgeInsets.all(16),
 
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                textStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                )),
-          ),
-        )
-      ],
-    );
+                listInnerDecoration: BoxDecoration(
+                  color: Theme.of(context).canvasColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                children: lists,
+                itemDivider: Divider(
+                    thickness: 2,
+                    height: 2,
+                    color: Theme.of(context).backgroundColor),
+                itemDecorationWhileDragging: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                ),
+                // listDragHandle: buildDragHandle(isList: true),
+                itemDragHandle: buildDragHandle(),
+                onItemReorder: onReorderListItem,
+                onListReorder: onReorderList,
+              ),
+            ),
+            // ElevatedButton(
+            //   child: const Text('Play One-Shot Animation'),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute<void>(
+            //         builder: (context) => const PlayOneShotAnimation(),
+            //       ),
+            //     );
+            //   },
+            // ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+              child: ElevatedButton(
+                onPressed: () {
+                  submitans(current, anslist);
+                },
+                child: Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    )),
+              ),
+            )
+          ],
+        ));
   }
 
   DragHandle buildDragHandle({bool isList = false}) {
