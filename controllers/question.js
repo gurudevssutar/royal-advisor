@@ -2,30 +2,60 @@ const QuestionOptions = require('../models/questionOptions')
 const Question = require('../models/question')
 
 exports.getQuestion = async (req, res, next) => {
-    const currentPage = req.query.page || 1;
-    const perPage = 2;
-    let totalItems;
 
     try{
-        totalItems = await Question.find().countDocuments();
-        const posts = await Question.find()
+        const questionId = req.params.questionId;
+        const question = await Question.findById(questionId)
                                 .populate('questionOptions')
                                 .populate('answer.qRef')
-                                // .sort({createdAt: -1})
-                                .skip((currentPage-1)*perPage)
-                                .limit(perPage)
+
+        if(question == null){
+            res.status(404).json({
+                error: 'Resource Does Not Exist',
+                message: 'Not Found'
+            });
+            return;
+        }
 
         res.status(200).json({
-            message: 'Questions Fetched Successfully',
-            posts: posts,
-            totalItems: totalItems
-            });
+            message: 'Question Fetched Successfully',
+            question: question
+        });
     }catch(err){
         if(!err.statusCode){
             err.statusCode = 502;
         }
         if(!err.data){
-            err.data = 'Unable to fetch posts';
+            err.data = 'Unable to fetch question';
+        }
+        next(err);
+    }
+};
+
+
+exports.getQuestionList = async (req, res, next) => {
+
+    try{
+        const questions = await Question.find().select('questionNum')
+
+        if(questions == null){
+            res.status(404).json({
+                error: 'Resources Does Not Exist',
+                message: 'Not Found'
+            });
+            return;
+        }
+
+        res.status(200).json({
+            message: 'Questions Fetched Successfully',
+            questions: questions
+        });
+    }catch(err){
+        if(!err.statusCode){
+            err.statusCode = 502;
+        }
+        if(!err.data){
+            err.data = 'Unable to fetch questions';
         }
         next(err);
     }
