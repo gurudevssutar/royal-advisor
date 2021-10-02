@@ -29,7 +29,10 @@ class Loader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Colors.yellowAccent),
                 ),
-              ]),
+              ],
+                repeatForever: true,
+                isRepeatingAnimation: true,
+              ),
             )
           ],
         ),
