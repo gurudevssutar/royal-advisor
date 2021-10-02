@@ -20,16 +20,17 @@ class Loader extends StatelessWidget {
                 height: 200,
                 child: RiveAnimation.asset('assets/crown-rotating.riv')),
             Container(
-              child: AnimatedTextKit(animatedTexts: [
-                TyperAnimatedText(
-                  'Loading...',
-                  speed: const Duration(milliseconds: 200),
-                  textStyle: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.yellowAccent),
-                ),
-              ],
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TyperAnimatedText(
+                    'Loading...',
+                    speed: const Duration(milliseconds: 200),
+                    textStyle: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellowAccent),
+                  ),
+                ],
                 repeatForever: true,
                 isRepeatingAnimation: true,
               ),

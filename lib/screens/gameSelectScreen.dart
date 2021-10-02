@@ -112,7 +112,8 @@ class _GameSelectState extends State<GameSelect> {
   }
 
   Future fetchQuestionList() async {
-    final url = Uri.parse("https://royal-advisor-api.herokuapp.com/question/all");
+    final url =
+        Uri.parse("https://royal-advisor-api.herokuapp.com/question/all");
     final response = await http.get(url);
     print('fetch question');
     if (response.statusCode == 200) {
