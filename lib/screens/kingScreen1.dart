@@ -18,8 +18,8 @@ class KingScreen extends StatelessWidget {
           children: [
             Image.network(
                 'https://th.bing.com/th/id/OIP.v159VFeV5NRhNADty8jmwQHaJ4?w=206&h=275&c=7&r=0&o=5&dpr=1.25&pid=1.7',
-                width: 450,
-                height: 650,
+                width: double.infinity,
+                height: double.infinity,
                 fit: BoxFit.cover),
             Positioned(
               // The Positioned widget is used to position the text inside the Stack widget

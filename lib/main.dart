@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/screens/gameSelectScreen.dart';
 import 'package:royal_advisor/screens/kingScreen1.dart';
+import 'package:royal_advisor/screens/splashScreen.dart';
 
 import 'screens/kingScreen2.dart';
 
@@ -43,8 +44,9 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
+    return SplashScreen();
     // return  KingScreen();
-    return  KingScreen2();
+    // return  KingScreen2();
     // return  GameSelect();
   }
 }
