@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
-import 'package:royal_advisor/Dialogs/rightansDialog.dart';
-import 'package:royal_advisor/Dialogs/wrongansDialog.dart';
+import 'package:royal_advisor/Dialogs/dialogsMain.dart';
 import 'package:royal_advisor/api/apiCalls.dart';
 import 'package:royal_advisor/data/draggable_lists.dart';
 import 'package:royal_advisor/models/draggable_list.dart';
@@ -63,18 +62,10 @@ class _AdvisorGameState extends State<AdvisorGame> {
   void submitans(List<DraggableList> soln, List<String> ans) {
     if (anscheck(soln, ans)) {
       print('Answer is correct');
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return RightAnsDialog();
-          });
+      DialogShower().rightAnsDialog(context);
     } else {
       print('Invalid Answer');
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return IncorrectAnsDialog();
-          });
+      DialogShower().wrongAnsDialog(context);
     }
   }
 
