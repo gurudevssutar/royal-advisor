@@ -6,6 +6,8 @@ import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/screens/gameSelectScreen.dart';
 import 'package:royal_advisor/screens/kingScreen1.dart';
 
+import 'screens/kingScreen2.dart';
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +43,8 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
-    return  KingScreen();
+    // return  KingScreen();
+    return  KingScreen2();
     // return  GameSelect();
   }
 }

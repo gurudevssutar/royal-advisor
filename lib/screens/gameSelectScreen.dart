@@ -5,6 +5,7 @@ import 'package:rive/rive.dart';
 import 'package:royal_advisor/Dialogs/Loader.dart';
 import 'package:http/http.dart' as http;
 import 'package:royal_advisor/models/questionListModel.dart';
+import 'package:royal_advisor/models/questionModel.dart';
 
 import 'advisorGame.dart';
 
@@ -115,7 +116,7 @@ class _GameSelectState extends State<GameSelect> {
     final url =
         Uri.parse("https://royal-advisor-api.herokuapp.com/question/all");
     final response = await http.get(url);
-    print('fetch question');
+    print('fetch questions list');
     if (response.statusCode == 200) {
       if (response.body.length <= 0) {
         return;
@@ -124,6 +125,25 @@ class _GameSelectState extends State<GameSelect> {
       final parsed = json.decode(response.body) as Map<String, dynamic>;
       print(parsed);
       var temp = decodeQuestionList(parsed['questions']);
+      print(temp);
+      print('end fetch questions list');
+      return temp;
+    } else {
+      // moveToNoInternetScreen(ctx);
+      throw Exception('Unable to fetch data from the REST API');
+    }
+  }
+
+  Future fetchQuestion() async {
+    final url =
+    Uri.parse("https://royal-advisor-api.herokuapp.com/question/single/6151f6a1bd1791c3716098e7");
+    final response = await http.get(url);
+    print('fetch question');
+    if (response.statusCode == 200) {
+      print(response.body);
+      final parsed = json.decode(response.body) as Map<String, dynamic>;
+      print(parsed);
+      var temp = Question.fromJson(parsed['question']);
       print(temp);
       print('end fetch question');
       return temp;
@@ -134,9 +154,11 @@ class _GameSelectState extends State<GameSelect> {
   }
 
   List<QuestionListItem> decodeQuestionList(parsed) {
-    return parsed
-        .map<QuestionListItem>((json) => QuestionListItem.fromMap(json))
+    var temp = parsed
+        .map<QuestionListItem>((json) => QuestionListItem.fromJson(json))
         .toList();
+
+    return temp;
   }
 
   Future<void> _refreshQuestions(BuildContext context) async {
@@ -147,9 +169,8 @@ class _GameSelectState extends State<GameSelect> {
     return temp;
   }
 
-  void showLoaderDialog(BuildContext context) {
-    showDialog(
-      barrierColor: Colors.transparent,
+  Future showLoaderDialog(BuildContext context) {
+    return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -159,14 +180,15 @@ class _GameSelectState extends State<GameSelect> {
   }
 
   void moveToGameScreen(BuildContext ctx) {
-    Navigator.of(ctx).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return AdvisorGame();
-        },
-      ),
-    );
-    // showLoaderDialog(ctx);
+    // Navigator.of(ctx).push(
+    //   MaterialPageRoute(
+    //     builder: (_) {
+    //       return AdvisorGame();
+    //     },
+    //   ),
+    // );
+    showLoaderDialog(ctx);
+    fetchQuestion();
   }
 
   void moveToNoInternetScreen(BuildContext ctx) {
@@ -202,12 +224,8 @@ class _GameSelectState extends State<GameSelect> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: Loader());
-              }
-              print('snapsghot printing');
-              print(snapshot);
-              print(snapshot.data);
-
-              if (snapshot.hasError) {
+                // return showLoaderDialog(context);
+              }else if (snapshot.hasError) {
                 return Text('An error occurred!');
               } else if (snapshot.data == null) {
                 return Text('Empty data');
