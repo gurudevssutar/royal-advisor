@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:royal_advisor/Dialogs/rightansDialog.dart';
 import 'package:royal_advisor/Dialogs/wrongansDialog.dart';
+import 'package:royal_advisor/api/apiCalls.dart';
 import 'package:royal_advisor/data/draggable_lists.dart';
 import 'package:royal_advisor/models/draggable_list.dart';
-import 'package:royal_advisor/widgets/fullscreenImage.dart';
-
+import 'package:royal_advisor/models/questionListModel.dart';
+import 'package:royal_advisor/models/questionModel.dart';
+import 'package:royal_advisor/widgets/clickableImage.dart';
 
 class AdvisorGame extends StatefulWidget {
-  const AdvisorGame({Key? key}) : super(key: key);
+  final List<QuestionListItem> _questionsList;
+  final String _id;
+  final int _questionNum;
+  final Question _question;
+
+  AdvisorGame(
+      {required List<QuestionListItem> questionsList,
+      required String id,
+      required int questionNum,
+      required Question question})
+      : _questionsList = questionsList,
+        _id = id,
+        _questionNum = questionNum,
+        _question = question;
 
   @override
   _AdvisorGameState createState() => _AdvisorGameState();
@@ -20,6 +34,8 @@ class AdvisorGame extends StatefulWidget {
 class _AdvisorGameState extends State<AdvisorGame> {
   late List<DragAndDropList> lists;
   late List<DraggableList> current;
+  late Question _question;
+  late final String _questionId;
 
   @override
   void initState() {
@@ -27,6 +43,9 @@ class _AdvisorGameState extends State<AdvisorGame> {
 
     lists = allLists.map(buildList).toList();
     current = allLists;
+    _question = widget._question;
+    _questionId = widget._id;
+    print(_question.questionImg);
   }
 
   bool anscheck(List<DraggableList> soln, List<String> ans) {
@@ -59,6 +78,16 @@ class _AdvisorGameState extends State<AdvisorGame> {
     }
   }
 
+  Future<void> _refreshQuestions(BuildContext context) async {
+    var temp = await ApiCalls().fetchQuestion(_questionId);
+    if (temp is Question) {
+      setState(() {
+        _question = temp;
+      });
+    }
+    return temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,97 +96,78 @@ class _AdvisorGameState extends State<AdvisorGame> {
           title: Text('Royal Advisor'),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            GestureDetector(
-              child: Hero(
-                  tag: 'imageHero',
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG",
-                    placeholder: (context, url) => Center(
-                        child: Container(
-                            width: 32,
-                            height: 32,
-                            child: CircularProgressIndicator())),
-                    errorWidget: (context, url, error) {
-                      print('Error: ${error}');
-                      print('URL: ${url}');
-                      return Icon(Icons.error);
-                    },
-                  )),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return DetailScreen(
-                      tag: 'imageHero',
-                      url:
-                          "https://raw.githubusercontent.com/gurudevssutar/resources/main/OS_Q1.JPG");
-                }));
-              },
-            ),
-            // GestureDetector(
-            //   onTap: () {}, // handle your image tap here
-            //   child: Image.network(
-            //     'https://raw.githubusercontent.com/gurudevssutar/royal-advisor/resources/OS-q1.png',
-            //      // this is the solution for border
-            //     width: 500,
-            //     height: 200,
-            //   ),
-            // ),
-            Flexible(
-              child: DragAndDropLists(
-                lastItemTargetHeight: 50,
-                addLastItemTargetHeightToTop: true,
-                // lastListTargetSize: 30,
-                listPadding: EdgeInsets.all(16),
+        body: RefreshIndicator(
+          onRefresh: () => _refreshQuestions(context),
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  Text(_question.questionText),
+                  ClickableCachedImageWithAnimationToFullScreen(
+                      animationTag: "imageHero",
+                      imageUrl: _question.questionImg),
+                  Flexible(
+                    child: DragAndDropLists(
+                      lastItemTargetHeight: 50,
+                      addLastItemTargetHeightToTop: true,
+                      // lastListTargetSize: 30,
+                      listPadding: EdgeInsets.all(16),
 
-                listInnerDecoration: BoxDecoration(
-                  color: Theme.of(context).canvasColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                children: lists,
-                itemDivider: Divider(
-                    thickness: 2,
-                    height: 2,
-                    color: Theme.of(context).backgroundColor),
-                itemDecorationWhileDragging: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-                ),
-                // listDragHandle: buildDragHandle(isList: true),
-                itemDragHandle: buildDragHandle(),
-                onItemReorder: onReorderListItem,
-                onListReorder: onReorderList,
+                      listInnerDecoration: BoxDecoration(
+                        color: Theme.of(context).canvasColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      children: lists,
+                      itemDivider: Divider(
+                          thickness: 2,
+                          height: 2,
+                          color: Theme.of(context).backgroundColor),
+                      itemDecorationWhileDragging: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.black12, blurRadius: 4)
+                        ],
+                      ),
+                      // listDragHandle: buildDragHandle(isList: true),
+                      itemDragHandle: buildDragHandle(),
+                      onItemReorder: onReorderListItem,
+                      onListReorder: onReorderList,
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //   child: const Text('Play One-Shot Animation'),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute<void>(
+                  //         builder: (context) => const PlayOneShotAnimation(),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        submitans(current, anslist);
+                      },
+                      child: Text('Submit'),
+                      style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).primaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          )),
+                    ),
+                  )
+                ],
               ),
             ),
-            // ElevatedButton(
-            //   child: const Text('Play One-Shot Animation'),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute<void>(
-            //         builder: (context) => const PlayOneShotAnimation(),
-            //       ),
-            //     );
-            //   },
-            // ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: ElevatedButton(
-                onPressed: () {
-                  submitans(current, anslist);
-                },
-                child: Text('Submit'),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    textStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    )),
-              ),
-            )
-          ],
+          ),
         ));
   }
 

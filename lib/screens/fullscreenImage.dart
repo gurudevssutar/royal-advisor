@@ -32,12 +32,18 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Scaffold(
-        body: InteractiveViewer(
-          panEnabled: false, // Set it to false
+    return Scaffold(
+      backgroundColor: Colors.black,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: GestureDetector(
+        child: InteractiveViewer(
+          panEnabled: true, // Set it to false
           boundaryMargin: EdgeInsets.all(100),
-          minScale: 0.5,
+          minScale: 0.25,
           maxScale: 2,
           child: Center(
             child: Hero(
@@ -54,10 +60,11 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
           ),
         ),
+        onTap: () {
+          Navigator.pop(context);
+        },
       ),
-      onTap: () {
-        Navigator.pop(context);
-      },
+
     );
   }
 }

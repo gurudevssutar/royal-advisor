@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:royal_advisor/Dialogs/Loader.dart';
-import 'package:http/http.dart' as http;
+import 'package:royal_advisor/api/apiCalls.dart';
 import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/models/questionModel.dart';
 
@@ -109,64 +107,15 @@ class _GameSelectState extends State<GameSelect> {
   @override
   void initState() {
     super.initState();
-    _questions = fetchQuestionList();
-  }
-
-  Future fetchQuestionList() async {
-    final url =
-        Uri.parse("https://royal-advisor-api.herokuapp.com/question/all");
-    final response = await http.get(url);
-    print('fetch questions list');
-    if (response.statusCode == 200) {
-      if (response.body.length <= 0) {
-        return;
-      }
-      print(response.body);
-      final parsed = json.decode(response.body) as Map<String, dynamic>;
-      print(parsed);
-      var temp = decodeQuestionList(parsed['questions']);
-      print(temp);
-      print('end fetch questions list');
-      return temp;
-    } else {
-      // moveToNoInternetScreen(ctx);
-      throw Exception('Unable to fetch data from the REST API');
-    }
-  }
-
-  Future fetchQuestion() async {
-    final url =
-    Uri.parse("https://royal-advisor-api.herokuapp.com/question/single/6151f6a1bd1791c3716098e7");
-    final response = await http.get(url);
-    print('fetch question');
-    if (response.statusCode == 200) {
-      print(response.body);
-      final parsed = json.decode(response.body) as Map<String, dynamic>;
-      print(parsed);
-      var temp = Question.fromJson(parsed['question']);
-      print(temp);
-      print('end fetch question');
-      return temp;
-    } else {
-      // moveToNoInternetScreen(ctx);
-      throw Exception('Unable to fetch data from the REST API');
-    }
-  }
-
-  List<QuestionListItem> decodeQuestionList(parsed) {
-    var temp = parsed
-        .map<QuestionListItem>((json) => QuestionListItem.fromJson(json))
-        .toList();
-
-    return temp;
+    _questions = ApiCalls().fetchQuestionList();
   }
 
   Future<void> _refreshQuestions(BuildContext context) async {
-    var temp = fetchQuestionList();
+    // var temp = await ApiCalls().fetchQuestionList();
     setState(() {
-      _questions = temp;
+      _questions = ApiCalls().fetchQuestionList();
     });
-    return temp;
+    return;
   }
 
   Future showLoaderDialog(BuildContext context) {
@@ -174,21 +123,33 @@ class _GameSelectState extends State<GameSelect> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return Loader();
+        return WillPopScope(onWillPop: () async => false, child: Loader());
       },
     );
   }
 
-  void moveToGameScreen(BuildContext ctx) {
-    // Navigator.of(ctx).push(
-    //   MaterialPageRoute(
-    //     builder: (_) {
-    //       return AdvisorGame();
-    //     },
-    //   ),
-    // );
+  Future moveToGameScreen(BuildContext ctx, String id, int questionNumber,
+      List<QuestionListItem> questionsList) async {
     showLoaderDialog(ctx);
-    fetchQuestion();
+    var temp = await ApiCalls().fetchQuestion(id);
+    Navigator.pop(ctx);
+
+    if (temp is Question && questionsList.length > 0) {
+      Navigator.of(ctx).push(
+        MaterialPageRoute(
+          builder: (_) {
+            return AdvisorGame(
+                questionsList: questionsList,
+                id: id,
+                questionNum: questionNumber,
+                question: temp);
+          },
+        ),
+      );
+    } else {
+      //show error dialog here
+      moveToNoInternetScreen(ctx);
+    }
   }
 
   void moveToNoInternetScreen(BuildContext ctx) {
@@ -224,11 +185,10 @@ class _GameSelectState extends State<GameSelect> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: Loader());
-                // return showLoaderDialog(context);
-              }else if (snapshot.hasError) {
-                return Text('An error occurred!');
+              } else if (snapshot.hasError) {
+                return Container(child: Text('An error occurred!'));
               } else if (snapshot.data == null) {
-                return Text('Empty data');
+                return Container(child: Text('Empty data'));
               } else {
                 List<QuestionListItem> list;
                 list = snapshot.data as List<QuestionListItem>;
@@ -255,27 +215,28 @@ class _GameSelectState extends State<GameSelect> {
                                   fontSize: 20,
                                 )),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              moveToGameScreen(context);
-                            },
-                            child: Text('Game Screen'),
-                            style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).primaryColor,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                )),
-                          ),
                           Expanded(
                             child: Container(
                               child: ListView.builder(
                                 itemCount: list.length,
                                 itemBuilder: (context, index) {
-                                  return Text(list[index].id.toString());
-                                  // return FruitItem(item: snapshot.data[index]);
+                                  // return Text(list[index].id.toString());
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      moveToGameScreen(context, list[index].id,
+                                          list[index].questionNum, list);
+                                    },
+                                    child: Text(
+                                        list[index].questionNum.toString()),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Theme.of(context).primaryColor,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                        textStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        )),
+                                  );
                                 },
                               ),
                             ),
