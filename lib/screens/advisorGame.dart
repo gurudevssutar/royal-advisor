@@ -8,6 +8,7 @@ import 'package:royal_advisor/data/draggable_lists.dart';
 import 'package:royal_advisor/models/draggable_list.dart';
 import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/models/questionModel.dart';
+import 'package:royal_advisor/widgets/DragAndDropListsWOP.dart';
 import 'package:royal_advisor/widgets/clickableImage.dart';
 
 class AdvisorGame extends StatefulWidget {
@@ -32,34 +33,63 @@ class AdvisorGame extends StatefulWidget {
 
 class _AdvisorGameState extends State<AdvisorGame> {
   late List<DragAndDropList> lists;
-  late List<DraggableList> current;
+  late List<QuestionOption> current;
   late Question _question;
   late final String _questionId;
+  late List<QuestionOption> allLists;
+  late List<AnswerOption> _ansOption;
 
   @override
   void initState() {
     super.initState();
 
-    lists = allLists.map(buildList).toList();
-    current = allLists;
+    // lists = allLists.map(buildList).toList() as List<DragAndDropList>;
+    // current = allLists;
     _question = widget._question;
+    current=_question.questionOptions;
     _questionId = widget._id;
     print(_question.questionImg);
+    allLists=_question.questionOptions;
+    _ansOption=_question.answer;
   }
 
-  bool anscheck(List<DraggableList> soln, List<String> ans) {
+  bool anscheck(List<QuestionOption> soln, List<AnswerOption> ans) {
     // Code to check answer
-    int j = 0;
-    for (DraggableListItem i in soln[0].items) {
-      if (i.id != ans[j]) {
+    if(soln.length!=ans.length){
+      return false;
+    }
+
+    for(int i=0;i<soln.length;i++){
+      soln[i].startTime=0;
+      soln[i].endTime=0;
+    }
+
+    for(int i=0;i<soln.length;i++){
+        if(i==0){
+          soln[i].endTime=soln[i].burstTime;
+          continue;
+        }
+        soln[i].startTime=soln[i-1].endTime;
+        soln[i].endTime=soln[i].startTime+soln[i].burstTime;
+    }
+    for(int i=0;i<soln.length;i++){
+      print(soln[i].name);
+      print(soln[i].startTime);
+      print(soln[i].endTime);
+      print("");
+
+      if(soln[i].id!=ans[i].qRef.id){
         return false;
       }
-      j++;
+      if(soln[i].startTime!=ans[i].startTime || soln[i].endTime!=ans[i].endTime ){
+        return false;
+      }
+
     }
     return true;
   }
 
-  void submitans(List<DraggableList> soln, List<String> ans) {
+  void submitans(List<QuestionOption> soln, List<AnswerOption> ans) {
     if (anscheck(soln, ans)) {
       print('Answer is correct');
       DialogShower().rightAnsDialog(context);
@@ -100,32 +130,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
                       animationTag: "imageHero",
                       imageUrl: _question.questionImg),
                   Flexible(
-                    child: DragAndDropLists(
-                      lastItemTargetHeight: 50,
-                      addLastItemTargetHeightToTop: true,
-                      // lastListTargetSize: 30,
-                      listPadding: EdgeInsets.all(16),
-
-                      listInnerDecoration: BoxDecoration(
-                        color: Theme.of(context).canvasColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      children: lists,
-                      itemDivider: Divider(
-                          thickness: 2,
-                          height: 2,
-                          color: Theme.of(context).backgroundColor),
-                      itemDecorationWhileDragging: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 4)
-                        ],
-                      ),
-                      // listDragHandle: buildDragHandle(isList: true),
-                      itemDragHandle: buildDragHandle(),
-                      onItemReorder: onReorderListItem,
-                      onListReorder: onReorderList,
-                    ),
+                    child: DragAndDropListsWOP(current:current, allLists: allLists,),
                   ),
                   // ElevatedButton(
                   //   child: const Text('Play One-Shot Animation'),
@@ -142,7 +147,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: ElevatedButton(
                       onPressed: () {
-                        submitans(current, anslist);
+                        submitans(current, _ansOption );
                       },
                       child: Text('Submit'),
                       style: ElevatedButton.styleFrom(
@@ -162,83 +167,85 @@ class _AdvisorGameState extends State<AdvisorGame> {
         ));
   }
 
-  DragHandle buildDragHandle({bool isList = false}) {
-    final verticalAlignment = isList
-        ? DragHandleVerticalAlignment.top
-        : DragHandleVerticalAlignment.center;
-    final color = isList ? Colors.blueGrey : Colors.black26;
+  // DragHandle buildDragHandle({bool isList = false}) {
+  //   final verticalAlignment = isList
+  //       ? DragHandleVerticalAlignment.top
+  //       : DragHandleVerticalAlignment.center;
+  //   final color = isList ? Colors.blueGrey : Colors.black26;
+  //
+  //   return DragHandle(
+  //     verticalAlignment: verticalAlignment,
+  //     child: Container(
+  //       padding: EdgeInsets.only(right: 10),
+  //       child: Icon(Icons.menu, color: color),
+  //     ),
+  //   );
+  // }
 
-    return DragHandle(
-      verticalAlignment: verticalAlignment,
-      child: Container(
-        padding: EdgeInsets.only(right: 10),
-        child: Icon(Icons.menu, color: color),
-      ),
-    );
-  }
+  // DragAndDropList buildList(DraggableList list) => DragAndDropList(
+  //       header: Container(
+  //         padding: EdgeInsets.all(0),
+  //         child: Text(
+  //           list.header,
+  //           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+  //         ),
+  //       ),
+  //       children: list.items
+  //           .map((item) => DragAndDropItem(
+  //                 child: ListTile(
+  //                   leading: Image.network(
+  //                     item.urlImage,
+  //                     width: 40,
+  //                     height: 40,
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                   title: Text(item.title +
+  //                       "\nArrival Time = " +
+  //                       item.arrivalTime.toString() +
+  //                       "\nExecute Time = " +
+  //                       item.executeTime.toString()),
+  //                 ),
+  //               ))
+  //           .toList(),
+  //     );
 
-  DragAndDropList buildList(DraggableList list) => DragAndDropList(
-        header: Container(
-          padding: EdgeInsets.all(0),
-          child: Text(
-            list.header,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-        ),
-        children: list.items
-            .map((item) => DragAndDropItem(
-                  child: ListTile(
-                    leading: Image.network(
-                      item.urlImage,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(item.title +
-                        "\nArrival Time = " +
-                        item.arrivalTime.toString() +
-                        "\nExecute Time = " +
-                        item.executeTime.toString()),
-                  ),
-                ))
-            .toList(),
-      );
+  // void onReorderListItem(
+  //   int oldItemIndex,
+  //   int oldListIndex,
+  //   int newItemIndex,
+  //   int newListIndex,
+  // ) {
+  //   setState(() {
+  //     final oldListItems = lists[oldListIndex].children;
+  //     final newListItems = lists[newListIndex].children;
+  //
+  //     for (DraggableListItem i in current[0].items) {
+  //       print("${i.id}");
+  //     }
+  //     print("${oldItemIndex} ${oldListIndex} ${newItemIndex} ${newListIndex}");
+  //
+  //     if (oldListIndex == newListIndex) {
+  //       final movedItem = oldListItems.removeAt(oldItemIndex);
+  //       final movedTile = current[0].items.removeAt(oldItemIndex);
+  //       newListItems.insert(newItemIndex, movedItem);
+  //
+  //       current[0].items.insert(newItemIndex, movedTile);
+  //       for (DraggableListItem i in current[0].items) {
+  //         print("${i.id}");
+  //       }
+  //     }
+  //   });
+  // }
 
-  void onReorderListItem(
-    int oldItemIndex,
-    int oldListIndex,
-    int newItemIndex,
-    int newListIndex,
-  ) {
-    setState(() {
-      final oldListItems = lists[oldListIndex].children;
-      final newListItems = lists[newListIndex].children;
+  // void onReorderList(
+  //   int oldListIndex,
+  //   int newListIndex,
+  // ) {
+  //   setState(() {
+  //     final movedList = lists.removeAt(oldListIndex);
+  //     lists.insert(newListIndex, movedList);
+  //   });
+  // }
 
-      for (DraggableListItem i in current[0].items) {
-        print("${i.id}");
-      }
-      print("${oldItemIndex} ${oldListIndex} ${newItemIndex} ${newListIndex}");
 
-      if (oldListIndex == newListIndex) {
-        final movedItem = oldListItems.removeAt(oldItemIndex);
-        final movedTile = current[0].items.removeAt(oldItemIndex);
-        newListItems.insert(newItemIndex, movedItem);
-
-        current[0].items.insert(newItemIndex, movedTile);
-        for (DraggableListItem i in current[0].items) {
-          print("${i.id}");
-        }
-      }
-    });
-  }
-
-  void onReorderList(
-    int oldListIndex,
-    int newListIndex,
-  ) {
-    setState(() {
-      final movedList = lists.removeAt(oldListIndex);
-      lists.insert(newListIndex, movedList);
-    });
-  }
 }

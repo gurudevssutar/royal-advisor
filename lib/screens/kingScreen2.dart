@@ -1,10 +1,23 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:royal_advisor/widgets/KingScreenWidget.dart';
 
 import 'gameSelectScreen.dart';
 
 class KingScreen2 extends StatelessWidget {
   const KingScreen2({Key? key}) : super(key: key);
+
+  void moveToGameSelect(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) {
+          return GameSelect();
+        },
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,67 +27,75 @@ class KingScreen2 extends StatelessWidget {
           title: Text('Royal Advisor'),
           centerTitle: true,
         ),
-        body: Stack(
-          children: [
-            Image.network(
-                'https://qph.fs.quoracdn.net/main-qimg-c65857449cabf0d1630f86dcb7984338-c',
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover),
-            Positioned(
-              // The Positioned widget is used to position the text inside the Stack widget
-              bottom: 80,
-              right: 10,
+        body:
+        KingScreenWidget(imageURI: 'https://qph.fs.quoracdn.net/main-qimg-c65857449cabf0d1630f86dcb7984338-c',
+            text1:'Yes my majesty',
+          text2:' I will help you solve the problems.',
+          nextScreen:moveToGameSelect ,
 
-              child: Container(
-                // We use this Container to create a black box that wraps the white text so that the user can read the text even when the image is white
-                width: 200,
-                color: Colors.black54,
-                padding: EdgeInsets.all(10),
-                child: Column(children: <Widget>[
-                  AnimatedTextKit(
-                    animatedTexts: [
-                      TyperAnimatedText(
-                        'Yes my majesty',
-                        textStyle: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                      TyperAnimatedText(
-                        ' I will help you solve the problems.',
-                        textStyle: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    ],
-                    isRepeatingAnimation: false,
-                  ),
-                ]),
-              ),
-            ),
-            Positioned(
-              bottom: 10,
-              right: 10,
-              child: Container(
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    WavyAnimatedText(
-                      'Click to Continue --->',
-                      textStyle: TextStyle(fontSize: 20, color: Colors.blue),
-                    ),
-                  ],
-                  isRepeatingAnimation: true,
-                  repeatForever: true,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) {
-                          return GameSelect();
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            )
-          ],
-        ));
+        ),
+        // Stack(
+        //   children: [
+        //     Image.network(
+        //         'https://qph.fs.quoracdn.net/main-qimg-c65857449cabf0d1630f86dcb7984338-c',
+        //         width: double.infinity,
+        //         height: double.infinity,
+        //         fit: BoxFit.cover),
+        //     Positioned(
+        //       // The Positioned widget is used to position the text inside the Stack widget
+        //       bottom: 80,
+        //       right: 10,
+        //
+        //       child: Container(
+        //         // We use this Container to create a black box that wraps the white text so that the user can read the text even when the image is white
+        //         width: 200,
+        //         color: Colors.black54,
+        //         padding: EdgeInsets.all(10),
+        //         child: Column(children: <Widget>[
+        //           AnimatedTextKit(
+        //             animatedTexts: [
+        //               TyperAnimatedText(
+        //                 'Yes my majesty',
+        //                 textStyle: TextStyle(fontSize: 20, color: Colors.white),
+        //               ),
+        //               TyperAnimatedText(
+        //                 ' I will help you solve the problems.',
+        //                 textStyle: TextStyle(fontSize: 20, color: Colors.white),
+        //               ),
+        //             ],
+        //             isRepeatingAnimation: false,
+        //           ),
+        //         ]),
+        //       ),
+        //     ),
+        //     Positioned(
+        //       bottom: 10,
+        //       right: 10,
+        //       child: Container(
+        //         child: AnimatedTextKit(
+        //           animatedTexts: [
+        //             WavyAnimatedText(
+        //               'Click to Continue --->',
+        //               textStyle: TextStyle(fontSize: 20, color: Colors.blue),
+        //             ),
+        //           ],
+        //           isRepeatingAnimation: true,
+        //           repeatForever: true,
+        //           onTap: () {
+        //             Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (_) {
+        //                   return GameSelect();
+        //                 },
+        //               ),
+        //             );
+        //           },
+        //         ),
+        //       ),
+        //     )
+        //   ],
+        // )
+    );
   }
 }

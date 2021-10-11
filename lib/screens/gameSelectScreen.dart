@@ -101,10 +101,12 @@ class _GameSelectState extends State<GameSelect> {
                           ),
                           Expanded(
                             child: Container(
+                              //gridviewBuilder
                               child: ListView.builder(
                                 itemCount: list.length,
                                 itemBuilder: (context, index) {
                                   // return Text(list[index].id.toString());
+                                  //gridItem
                                   return ElevatedButton(
                                     onPressed: () {
                                       moveToGameScreen(context, list[index].id,
