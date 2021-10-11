@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+import 'package:royal_advisor/Dialogs/gameCompleted.dart';
+import 'package:royal_advisor/Dialogs/noInternet.dart';
 import 'package:royal_advisor/Dialogs/rightansDialog.dart';
 import 'package:royal_advisor/Dialogs/wrongansDialog.dart';
 
 import 'Loader.dart';
 
 class DialogShower {
-  void rightAnsDialog(BuildContext context) {
+  void rightAnsDialog(BuildContext context, String id, int nextQuestionNum,
+      Function nextQuestion) {
     showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return RightAnsDialog();
+          return RightAnsDialog(
+              id: id,
+              nextQuestionNum: nextQuestionNum,
+              nextQuestion: nextQuestion);
         });
   }
 
@@ -47,7 +53,7 @@ class DialogShower {
   //   );
   // }
 
-  void moveToNoInternetScreen(BuildContext ctx) {
+  void moveToErrorScreen(BuildContext ctx) {
     showDialog(
       context: ctx,
       builder: (ctx) => AlertDialog(
@@ -75,5 +81,24 @@ class DialogShower {
         ],
       ),
     );
+  }
+
+  void moveToNoInternetScreen(
+      BuildContext context, bool back, bool doubleBack) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return NoInternetDialog(back: back, doubleBack: doubleBack);
+        });
+  }
+
+  void showGameCompletedDialog(BuildContext context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return GameCompletedDialog();
+        });
   }
 }

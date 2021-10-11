@@ -20,7 +20,7 @@ class _DragAndDropListsWOPState extends State<DragAndDropListsWOP> {
 
   late List<DragAndDropList> lists=[];
 
-  late List<QuestionOption> allLists=widget.allLists;
+  late final List<QuestionOption> allLists=widget.allLists;
 
 
   @override

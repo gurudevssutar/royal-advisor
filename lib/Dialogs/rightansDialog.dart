@@ -5,13 +5,13 @@ import './constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RightAnsDialog extends StatefulWidget {
-  @override
-  _RightAnsDialogState createState() => _RightAnsDialogState();
-}
+class RightAnsDialog extends StatelessWidget {
+  final String id;
+  final int nextQuestionNum;
+  final Function nextQuestion;
 
-class _RightAnsDialogState extends State<RightAnsDialog> {
-  @override
+  RightAnsDialog({required this.id,required this.nextQuestionNum,required this.nextQuestion});
+
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -62,7 +62,7 @@ class _RightAnsDialogState extends State<RightAnsDialog> {
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    nextQuestion(id, nextQuestionNum, context);
                   },
                   child: Text(
                     'Next Question',

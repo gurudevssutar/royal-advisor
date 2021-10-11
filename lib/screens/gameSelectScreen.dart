@@ -50,7 +50,7 @@ class _GameSelectState extends State<GameSelect> {
       );
     } else {
       //show error dialog here
-      DialogShower().moveToNoInternetScreen(ctx);
+      DialogShower().moveToNoInternetScreen(ctx, true, false);
     }
   }
 
@@ -87,7 +87,7 @@ class _GameSelectState extends State<GameSelect> {
                                   'assets/crown-rotating.riv')),
                           ElevatedButton(
                             onPressed: () {
-                              DialogShower().moveToNoInternetScreen(context);
+                              DialogShower().moveToNoInternetScreen(context, false, false);
                             },
                             child: Text('No Internet Temporary'),
                             style: ElevatedButton.styleFrom(
