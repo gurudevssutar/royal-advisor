@@ -12,7 +12,7 @@ exports.getQuestion = async (req, res, next) => {
         if(question == null){
             res.status(404).json({
                 error: 'Resource Does Not Exist',
-                message: 'Not Found'
+                message: 'Question not found on Server'
             });
             return;
         }
@@ -26,7 +26,7 @@ exports.getQuestion = async (req, res, next) => {
             err.statusCode = 502;
         }
         if(!err.data){
-            err.data = 'Unable to fetch question';
+            err.data = 'Internal Server Error, Unable to fetch question';
         }
         next(err);
     }
@@ -43,7 +43,7 @@ exports.getQuestionList = async (req, res, next) => {
         if(questions == null){
             res.status(404).json({
                 error: 'Resources Does Not Exist',
-                message: 'Not Found'
+                message: 'Questions not found on server'
             });
             return;
         }
@@ -57,7 +57,7 @@ exports.getQuestionList = async (req, res, next) => {
             err.statusCode = 502;
         }
         if(!err.data){
-            err.data = 'Unable to fetch questions';
+            err.data = 'Internal Server Error, Unable to fetch questions';
         }
         next(err);
     }
