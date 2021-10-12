@@ -36,7 +36,9 @@ exports.getQuestion = async (req, res, next) => {
 exports.getQuestionList = async (req, res, next) => {
 
     try{
-        const questions = await Question.find().select('questionNum')
+        const questions = await Question.find().select('questionNum').sort('questionNum')
+
+        // console.log(questions)
 
         if(questions == null){
             res.status(404).json({
