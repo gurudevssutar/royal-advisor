@@ -29,6 +29,14 @@ class NoInternetDialog extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
+          ),
+        if (doubleBack)
+          ElevatedButton(
+            child: Text('Back'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
           )
       ],
     );

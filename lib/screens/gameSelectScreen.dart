@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:royal_advisor/Dialogs/Loader.dart';
 import 'package:royal_advisor/Dialogs/dialogsMain.dart';
+import 'package:royal_advisor/Dialogs/noInternet.dart';
 import 'package:royal_advisor/api/apiCalls.dart';
 import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/models/questionModel.dart';
@@ -70,7 +71,7 @@ class _GameSelectState extends State<GameSelect> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: Loader());
               } else if (snapshot.hasError) {
-                return Container(child: Text('An error occurred!'));
+                return Container(child: NoInternetDialog(back: false,doubleBack: true,));
               } else if (snapshot.data == null) {
                 return Container(child: Text('Empty data'));
               } else {
