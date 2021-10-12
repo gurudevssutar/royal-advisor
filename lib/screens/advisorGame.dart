@@ -113,7 +113,6 @@ class _AdvisorGameState extends State<AdvisorGame> {
 
   Future nextQuestion(
       String id, int nextQuestionNum, BuildContext context) async {
-
     DialogShower().loaderDialogIndissmisableOnBackPress(context);
     var temp = await ApiCalls().fetchQuestion(id);
 
@@ -131,7 +130,8 @@ class _AdvisorGameState extends State<AdvisorGame> {
     } else if (temp is NoInternetException) {
       DialogShower().moveToNoInternetScreen(context, true, false);
     } else {
-      DialogShower().moveToErrorScreen(context);
+      DialogShower().showGeneralErrorDialog(
+          context, temp.title, temp.message, true, false);
     }
   }
 
@@ -161,6 +161,11 @@ class _AdvisorGameState extends State<AdvisorGame> {
       setState(() {
         _question = temp;
       });
+    } else if (temp is NoInternetException) {
+      DialogShower().moveToNoInternetScreen(context, true, false);
+    } else {
+      DialogShower().showGeneralErrorDialog(
+          context, temp.title, temp.message, true, false);
     }
     return temp;
   }
@@ -197,17 +202,6 @@ class _AdvisorGameState extends State<AdvisorGame> {
                       allLists: allLists,
                     ),
                   ),
-                  // ElevatedButton(
-                  //   child: const Text('Play One-Shot Animation'),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute<void>(
-                  //         builder: (context) => const PlayOneShotAnimation(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: ElevatedButton(
