@@ -4,6 +4,7 @@ import 'package:royal_advisor/Dialogs/dialogsMain.dart';
 import 'package:royal_advisor/api/apiCalls.dart';
 import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/models/questionModel.dart';
+import 'package:royal_advisor/widgets/gameGridItem.dart';
 
 import '../customExceptions.dart';
 import 'advisorGame.dart';
@@ -25,7 +26,10 @@ class _GameSelectState extends State<GameSelect> {
   }
 
   Future<void> _refreshQuestions(BuildContext context) async {
+
+    DialogShower().loaderDialogIndissmisableOnBackPress(context);
     var temp = await ApiCalls().fetchQuestionList();
+    Navigator.pop(context);
 
     if (temp is List<QuestionListItem>) {
       setState(() {
@@ -41,18 +45,18 @@ class _GameSelectState extends State<GameSelect> {
     return;
   }
 
-  Future moveToGameScreen(BuildContext ctx, String id, int questionNumber,
-      List<QuestionListItem> questionsList) async {
+  Future moveToGameScreen(
+      BuildContext ctx, String id, int questionNumber) async {
     DialogShower().loaderDialogIndissmisableOnBackPress(ctx);
     var temp = await ApiCalls().fetchQuestion(id);
     Navigator.pop(ctx);
 
-    if (temp is Question && questionsList.length > 0) {
+    if (temp is Question && _questionsList.length > 0) {
       Navigator.of(ctx).push(
         MaterialPageRoute(
           builder: (_) {
             return AdvisorGame(
-                questionsList: questionsList,
+                questionsList: _questionsList,
                 id: id,
                 questionNum: questionNumber,
                 question: temp);
@@ -101,32 +105,18 @@ class _GameSelectState extends State<GameSelect> {
                 Expanded(
                   child: Container(
                     //gridviewBuilder
-                    child: ListView.builder(
-                      itemCount: _questionsList.length,
-                      itemBuilder: (context, index) {
-                        // return Text(list[index].id.toString());
-                        //gridItem
-                        return ElevatedButton(
-                          onPressed: () {
-                            moveToGameScreen(
-                                context,
-                                _questionsList[index].id,
-                                _questionsList[index].questionNum,
-                                _questionsList);
-                          },
-                          child: Text(
-                              _questionsList[index].questionNum.toString()),
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              textStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
-                        );
-                      },
-                    ),
+                    child: GridView.builder(
+                        itemCount: _questionsList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 7.0,
+                            mainAxisSpacing: 8.0),
+                        itemBuilder: (BuildContext context, int index) {
+                          return GameGridItem(
+                              id: _questionsList[index].id,
+                              questionNum: _questionsList[index].questionNum,
+                              moveToGameScreen: moveToGameScreen);
+                        }),
                   ),
                 ),
             ],
