@@ -28,11 +28,13 @@ class KingScreen2 extends StatelessWidget {
           centerTitle: true,
         ),
         body:
-        KingScreenWidget(imageURI: 'https://qph.fs.quoracdn.net/main-qimg-c65857449cabf0d1630f86dcb7984338-c',
+        KingScreenWidget(
+          // imageURI: 'https://qph.fs.quoracdn.net/main-qimg-c65857449cabf0d1630f86dcb7984338-c',
+          // imageURI: 'https://raw.githubusercontent.com/gurudevssutar/resources/main/advisor.jpg',
+          imageURI: 'https://raw.githubusercontent.com/gurudevssutar/resources/main/advisor_5.png',
             text1:'Yes my majesty',
           text2:' I will help you solve the problems.',
           nextScreen:moveToGameSelect ,
-
         ),
         // Stack(
         //   children: [
