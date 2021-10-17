@@ -5,6 +5,7 @@ class GameCompletedDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
+        //change
         'Game Completed',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
@@ -12,6 +13,7 @@ class GameCompletedDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            //change
             Image.asset('assets/no_internet.png'),
             Text('Game completed animation or image')
           ],

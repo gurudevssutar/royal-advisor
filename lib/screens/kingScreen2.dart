@@ -1,5 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:royal_advisor/Dialogs/dialogsMain.dart';
+import 'package:royal_advisor/api/apiCalls.dart';
+import 'package:royal_advisor/customExceptions.dart';
+import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/widgets/KingScreenWidget.dart';
 
 import 'gameSelectScreen.dart';
@@ -7,15 +11,26 @@ import 'gameSelectScreen.dart';
 class KingScreen2 extends StatelessWidget {
   const KingScreen2({Key? key}) : super(key: key);
 
-  void moveToGameSelect(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) {
-          return GameSelect();
-        },
-      ),
-    );
+  void moveToGameSelect(BuildContext context) async {
+    DialogShower().loaderDialogIndissmisableOnBackPress(context);
+    var temp = await ApiCalls().fetchQuestionList();
+    Navigator.pop(context);
+
+    if (temp is List<QuestionListItem>) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) {
+            return GameSelect(temp);
+          },
+        ),
+      );
+    } else if (temp is NoInternetException) {
+      DialogShower().moveToNoInternetScreen(context, true, false);
+    } else {
+      DialogShower().showGeneralErrorDialog(
+          context, temp.title, temp.message, true, false);
+    }
   }
 
 

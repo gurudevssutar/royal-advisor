@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 
-class NoInternetDialog extends StatelessWidget {
+class GeneralErrorDialog extends StatelessWidget {
+  final String title;
+  final String message;
   final bool back;
   final bool doubleBack;
 
-  NoInternetDialog({required this.back, required this.doubleBack});
+  GeneralErrorDialog(
+      {required this.title,
+      required this.message,
+      required this.back,
+      required this.doubleBack});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        'No Internet',
+        title,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       content: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/no_internet.png'),
-            Text('Please check your internet connection')
+            Image.asset('assets/errorImage.jpg', fit: BoxFit.contain),
+            Text(message)
           ],
         ),
       ),

@@ -44,8 +44,8 @@ class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
-    // return SplashScreen();
-    return  KingScreen();
+    return SplashScreen();
+    // return  KingScreen();
     // return  KingScreen2();
     // return  GameSelect();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:royal_advisor/Dialogs/gameCompleted.dart';
+import 'package:royal_advisor/Dialogs/generalErrorDialog.dart';
 import 'package:royal_advisor/Dialogs/noInternet.dart';
 import 'package:royal_advisor/Dialogs/rightansDialog.dart';
 import 'package:royal_advisor/Dialogs/wrongansDialog.dart';
@@ -90,6 +91,20 @@ class DialogShower {
         context: context,
         builder: (BuildContext context) {
           return NoInternetDialog(back: back, doubleBack: doubleBack);
+        });
+  }
+
+  void showGeneralErrorDialog(BuildContext context, String title,
+      String message, bool back, bool doubleBack) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return GeneralErrorDialog(
+              title: title,
+              message: message,
+              back: back,
+              doubleBack: doubleBack);
         });
   }
 
