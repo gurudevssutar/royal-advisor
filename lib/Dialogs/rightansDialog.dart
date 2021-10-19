@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:rive/rive.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 
 import './constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,13 +14,22 @@ class RightAnsDialog extends StatelessWidget {
   RightAnsDialog({required this.id,required this.nextQuestionNum,required this.nextQuestion});
 
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Constants.padding),
+    SizeConfig().init(context);
+    return Center(
+
+      child: Container(
+        width:SizeConfig.blockSizeHorizontal!*100,
+        height:SizeConfig.blockSizeVertical!*100,
+        child: Dialog(
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Constants.padding),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: contentBox(context),
+        ),
       ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: contentBox(context),
     );
   }
 

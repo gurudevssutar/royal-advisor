@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 
 // class Loader extends StatelessWidget {
 //   const Loader({Key? key}) : super(key: key);
@@ -52,10 +53,13 @@ class Loader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Material(
       type: MaterialType.transparency,
       child: Container(
         // height: 400,
+        width: SizeConfig.blockSizeHorizontal!*100,
+        height:SizeConfig.blockSizeVertical!*100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,

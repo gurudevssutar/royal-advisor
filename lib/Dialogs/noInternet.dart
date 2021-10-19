@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 
 class NoInternetDialog extends StatelessWidget {
   final bool back;
@@ -8,12 +9,15 @@ class NoInternetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return AlertDialog(
       title: Text(
         'No Internet',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       content: Container(
+        alignment: Alignment.center,
+        width: SizeConfig.blockSizeHorizontal!*100,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

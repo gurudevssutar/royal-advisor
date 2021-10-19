@@ -1,9 +1,13 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:royal_advisor/Dialogs/dialogsMain.dart';
 import 'package:royal_advisor/api/apiCalls.dart';
 import 'package:royal_advisor/models/questionListModel.dart';
 import 'package:royal_advisor/models/questionModel.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 import 'package:royal_advisor/widgets/gameGridItem.dart';
 
 import '../customExceptions.dart';
@@ -11,6 +15,7 @@ import 'advisorGame.dart';
 
 class GameSelect extends StatefulWidget {
   final List<QuestionListItem> _questionsList;
+
   GameSelect(this._questionsList);
 
   @override
@@ -26,7 +31,6 @@ class _GameSelectState extends State<GameSelect> {
   }
 
   Future<void> _refreshQuestions(BuildContext context) async {
-
     DialogShower().loaderDialogIndissmisableOnBackPress(context);
     var temp = await ApiCalls().fetchQuestionList();
     Navigator.pop(context);
@@ -73,54 +77,76 @@ class _GameSelectState extends State<GameSelect> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text('Royal Advisor'),
+        title: Container(
+          width: SizeConfig.blockSizeHorizontal! * 100,
+          child: Text("Royal Advisor"),
+        ),
         centerTitle: true,
       ),
-      body: RefreshIndicator(
-          onRefresh: () => _refreshQuestions(context),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  width: 100,
-                  height: 66.667,
-                  child: RiveAnimation.asset('assets/crown-rotating.riv')),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     DialogShower().moveToNoInternetScreen(context, false, false);
-              //   },
-              //   child: Text('No Internet Temporary'),
-              //   style: ElevatedButton.styleFrom(
-              //       primary: Theme.of(context).primaryColor,
-              //       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              //       textStyle: TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 20,
-              //       )),
-              // ),
-              if (_questionsList.length > 0)
-                Expanded(
-                  child: Container(
-                    //gridviewBuilder
-                    child: GridView.builder(
-                        itemCount: _questionsList.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      body: Container(
+        padding: EdgeInsets.all(SizeConfig.blockSizeVertical! * 2),
+        child: RefreshIndicator(
+            onRefresh: () => _refreshQuestions(context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(children: [
+                  Container(
+                      width: SizeConfig.blockSizeHorizontal! * 50,
+                      child: Text(
+                        "Start Advising...",
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20,
+                        ),
+                      )),
+                  Container(
+                      // width: 100,
+                      // height: 66.667,
+                      width: SizeConfig.blockSizeHorizontal! * 30,
+                      height: SizeConfig.blockSizeVertical! * 10,
+                      child: RiveAnimation.asset('assets/crown-rotating.riv')),
+                ]),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     DialogShower().moveToNoInternetScreen(context, false, false);
+                //   },
+                //   child: Text('No Internet Temporary'),
+                //   style: ElevatedButton.styleFrom(
+                //       primary: Theme.of(context).primaryColor,
+                //       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                //       textStyle: TextStyle(
+                //         fontWeight: FontWeight.bold,
+                //         fontSize: 20,
+                //       )),
+                // ),
+                if (_questionsList.length > 0)
+                  Expanded(
+                    child: Container(
+                      //gridviewBuilder
+                      child: GridView.builder(
+                          itemCount: _questionsList.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            crossAxisSpacing: 7.0,
-                            mainAxisSpacing: 8.0),
-                        itemBuilder: (BuildContext context, int index) {
-                          return GameGridItem(
-                              id: _questionsList[index].id,
-                              questionNum: _questionsList[index].questionNum,
-                              moveToGameScreen: moveToGameScreen);
-                        }),
+                            crossAxisSpacing:
+                                SizeConfig.blockSizeHorizontal! * 5,
+                            mainAxisSpacing: SizeConfig.blockSizeVertical! * 5,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return GameGridItem(
+                                id: _questionsList[index].id,
+                                questionNum: _questionsList[index].questionNum,
+                                moveToGameScreen: moveToGameScreen);
+                          }),
+                    ),
                   ),
-                ),
-            ],
-          )),
+              ],
+            )),
+      ),
     );
   }
 }

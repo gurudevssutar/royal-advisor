@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 
 class GameCompletedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return AlertDialog(
       title: Text(
         //change
@@ -10,12 +12,13 @@ class GameCompletedDialog extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       content: Container(
+        width:SizeConfig.blockSizeHorizontal!*100,
+        height:SizeConfig.blockSizeVertical!*100,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             //change
-            Image.asset('assets/no_internet.png'),
-            Text('Game completed animation or image')
+            Image.asset('assets/game_done.jpg'),
           ],
         ),
       ),

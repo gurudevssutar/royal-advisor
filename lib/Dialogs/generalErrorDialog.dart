@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 
 class GeneralErrorDialog extends StatelessWidget {
   final String title;
@@ -14,12 +15,15 @@ class GeneralErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return AlertDialog(
       title: Text(
         title,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       content: Container(
+        width:SizeConfig.blockSizeHorizontal!*100,
+        height:SizeConfig.blockSizeVertical!*100,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
