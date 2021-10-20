@@ -5,6 +5,7 @@ import 'package:royal_advisor/Dialogs/generalErrorDialog.dart';
 import 'package:royal_advisor/Dialogs/noInternet.dart';
 import 'package:royal_advisor/Dialogs/rightansDialog.dart';
 import 'package:royal_advisor/Dialogs/wrongansDialog.dart';
+import 'package:royal_advisor/widgets/SizeConfig.dart';
 
 import 'Loader.dart';
 
@@ -55,17 +56,21 @@ class DialogShower {
   // }
 
   void moveToErrorScreen(BuildContext ctx) {
+    SizeConfig().init(ctx);
     showDialog(
       context: ctx,
       builder: (ctx) => AlertDialog(
         title: Text('An error occurred!'),
         content: Container(
+          alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                  width: 200,
-                  height: 200,
+                  // width: 200,
+                  // height: 200,
+                  width:SizeConfig.blockSizeHorizontal!*100,
+                  height:SizeConfig.blockSizeVertical!*50,
                   child: RiveAnimation.asset('assets/alert_icon_red.riv')),
               Image.asset('assets/no_internet.png'),
               Text('Something went wrong')

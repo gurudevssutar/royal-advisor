@@ -22,7 +22,7 @@ class GeneralErrorDialog extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       content: Container(
-        width:SizeConfig.blockSizeHorizontal!*100,
+        width:SizeConfig.blockSizeHorizontal!*50,
         height:SizeConfig.blockSizeVertical!*100,
         child: Column(
           mainAxisSize: MainAxisSize.min,

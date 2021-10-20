@@ -18,8 +18,9 @@ class RightAnsDialog extends StatelessWidget {
     return Center(
 
       child: Container(
+        alignment: Alignment.center,
         width:SizeConfig.blockSizeHorizontal!*100,
-        height:SizeConfig.blockSizeVertical!*100,
+        height:SizeConfig.blockSizeVertical!*50,
         child: Dialog(
 
           shape: RoundedRectangleBorder(
