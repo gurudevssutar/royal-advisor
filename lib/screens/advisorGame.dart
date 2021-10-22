@@ -205,6 +205,7 @@ class _AdvisorGameState extends State<AdvisorGame> {
               //   ),
               // ),
               Container(
+                height:SizeConfig.blockSizeVertical!*60,
                 child: DragAndDropListsWOP(
                   current: current,
                   allLists: allLists,
