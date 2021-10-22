@@ -12,8 +12,8 @@ class GameCompletedDialog extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       content: Container(
-        width:SizeConfig.blockSizeHorizontal!*100,
-        height:SizeConfig.blockSizeVertical!*100,
+        // width:SizeConfig.blockSizeHorizontal!*100,
+        // height:SizeConfig.blockSizeVertical!*100,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

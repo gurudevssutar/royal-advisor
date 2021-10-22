@@ -16,8 +16,8 @@ class _IncorrectAnsDialogState extends State<IncorrectAnsDialog> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Container(
-      width:SizeConfig.blockSizeHorizontal!*100,
-      height:SizeConfig.blockSizeVertical!*50,
+      // width:SizeConfig.blockSizeHorizontal!*100,
+      // height:SizeConfig.blockSizeVertical!*50,
       alignment: Alignment.center,
       child: Dialog(
         shape: RoundedRectangleBorder(

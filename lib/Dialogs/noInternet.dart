@@ -17,8 +17,8 @@ class NoInternetDialog extends StatelessWidget {
       ),
       content: Container(
         alignment: Alignment.center,
-        width: SizeConfig.blockSizeHorizontal!*100,
-        height: SizeConfig.blockSizeVertical!*50,
+        // width: SizeConfig.blockSizeHorizontal!*100,
+        // height: SizeConfig.blockSizeVertical!*50,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
