@@ -28,7 +28,8 @@ class KingScreen extends StatelessWidget {
         ),
         body: KingScreenWidget(
             // imageURI:'https://th.bing.com/th/id/OIP.v159VFeV5NRhNADty8jmwQHaJ4?w=206&h=275&c=7&r=0&o=5&dpr=1.25&pid=1.7',
-            imageURI : 'https://raw.githubusercontent.com/gurudevssutar/resources/main/king.jpeg',
+            // imageURI : 'https://raw.githubusercontent.com/gurudevssutar/resources/main/king.jpeg',
+            imageURI:'assets/king.jpeg',
           // imageURI:Image.asset('assets/king.jpeg').toString(),
             text1: 'Hello Advisor',
             text2: ' Schedule all my today\'s task',
