@@ -175,71 +175,63 @@ class _AdvisorGameState extends State<AdvisorGame> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          title: Text('Royal Advisor'),
-          centerTitle: true,
-        ),
-        body: Container(
-          width: SizeConfig.blockSizeHorizontal! * 100,
-          height: SizeConfig.blockSizeVertical! * 100,
-          padding: EdgeInsets.fromLTRB(
-              SizeConfig.blockSizeHorizontal! * 2,
-              SizeConfig.blockSizeVertical! * 2,
-              SizeConfig.blockSizeHorizontal! * 2,
-              SizeConfig.blockSizeVertical! * 2),
-          child: RefreshIndicator(
-            onRefresh: () => _refreshQuestions(context),
-            child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Container(
-                // height: MediaQuery.of(context).size.height,
-                height :SizeConfig.blockSizeVertical!*100,
-                child: Column(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(
-                            SizeConfig.blockSizeHorizontal! * 2,
-                            SizeConfig.blockSizeVertical! * 2,
-                            SizeConfig.blockSizeHorizontal! * 2,
-                            SizeConfig.blockSizeVertical! * 2),
-                        child: Text(
-                          "${_question.questionNum}. ${_question.questionText}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 22),
-                        )),
-                    ClickableCachedImageWithAnimationToFullScreen(
-                        animationTag: "imageHero",
-                        imageUrl: _question.questionImg),
-                    Flexible(
-                      child: DragAndDropListsWOP(
-                        current: current,
-                        allLists: allLists,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          submitans(current, _ansOption);
-                        },
-                        child: Text('Submit'),
-                        style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).primaryColor,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            )),
-                      ),
-                    )
-                  ],
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBar(
+        title: Text('Royal Advisor'),
+        centerTitle: true,
+      ),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshQuestions(context),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.fromLTRB(
+                      SizeConfig.blockSizeHorizontal! * 2,
+                      SizeConfig.blockSizeVertical! * 2,
+                      SizeConfig.blockSizeHorizontal! * 2,
+                      SizeConfig.blockSizeVertical! * 2),
+                  child: Text(
+                    "${_question.questionNum}. ${_question.questionText}",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  )),
+              ClickableCachedImageWithAnimationToFullScreen(
+                  animationTag: "imageHero", imageUrl: _question.questionImg),
+              // Flexible(
+              //   child: DragAndDropListsWOP(
+              //     current: current,
+              //     allLists: allLists,
+              //   ),
+              // ),
+              Container(
+                child: DragAndDropListsWOP(
+                  current: current,
+                  allLists: allLists,
                 ),
               ),
-            ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    submitans(current, _ansOption);
+                  },
+                  child: Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      )),
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
 // DragHandle buildDragHandle({bool isList = false}) {
