@@ -19,7 +19,7 @@ class KingScreenWidget extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-          Image.network(
+          Image.asset(
               // 'https://th.bing.com/th/id/OIP.v159VFeV5NRhNADty8jmwQHaJ4?w=206&h=275&c=7&r=0&o=5&dpr=1.25&pid=1.7',
               imageURI,
               // width: double.infinity,
