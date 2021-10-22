@@ -193,7 +193,8 @@ class _AdvisorGameState extends State<AdvisorGame> {
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                // height: MediaQuery.of(context).size.height,
+                height :SizeConfig.blockSizeVertical!*100,
                 child: Column(
                   children: [
                     Container(
