@@ -15,18 +15,13 @@ class NoInternetDialog extends StatelessWidget {
         'No Internet',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      content: Container(
-        alignment: Alignment.center,
-        // width: SizeConfig.blockSizeHorizontal!*100,
-        // height: SizeConfig.blockSizeVertical!*50,
-        child: Column(
+      content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset('assets/no_internet.png'),
             Text('Please check your internet connection')
           ],
         ),
-      ),
       actions: <Widget>[
         if (back)
           ElevatedButton(
